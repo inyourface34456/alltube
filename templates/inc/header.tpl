@@ -18,7 +18,7 @@
                                 {if $supportedLocale->getCountry()}
                                     {$supportedLocale->getCountry()->getEmoji()}
                                 {/if}
-                                {$supportedLocale->getFullName()|ucfirst}
+                                {$supportedLocale->getFullName()}
                             </a>
                         </li>
                     {/if}
@@ -27,4 +27,3 @@
         </div>
     {/if}
 </header>
-<div class="wrapper">

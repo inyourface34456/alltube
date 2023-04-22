@@ -30,21 +30,21 @@ abstract class BaseController
      *
      * @var Video
      */
-    protected $video;
+    protected Video $video;
 
     /**
      * Default youtube-dl format.
      *
      * @var string
      */
-    protected $defaultFormat = 'best/bestvideo';
+    protected string $defaultFormat = 'best/bestvideo';
 
     /**
      * Slim dependency container.
      *
      * @var ContainerInterface
      */
-    protected $container;
+    protected ContainerInterface $container;
 
     /**
      * Config instance.
@@ -169,10 +169,8 @@ abstract class BaseController
      */
     protected function getVideoPageUrl(Request $request): string
     {
-        $url = $request->getQueryParam('url') ?: $request->getQueryParam('v');
-
         // Prevent SSRF attacks.
-        $parts = Url::validateUrl($url, new Options());
+        $parts = Url::validateUrl($request->getQueryParam('url'), new Options());
 
         return $parts['url'];
     }

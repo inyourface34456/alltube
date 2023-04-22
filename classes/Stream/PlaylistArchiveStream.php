@@ -24,7 +24,7 @@ class PlaylistArchiveStream extends ZipArchive implements StreamInterface
      *
      * @var Video[]
      */
-    private $videos = [];
+    private array $videos = [];
 
     /**
      * Stream used to store data before it is sent to the browser.
@@ -38,21 +38,21 @@ class PlaylistArchiveStream extends ZipArchive implements StreamInterface
      *
      * @var StreamInterface
      */
-    protected $curVideoStream;
+    protected StreamInterface $curVideoStream;
 
     /**
      * True if the archive is complete.
      *
      * @var bool
      */
-    private $isComplete = false;
+    private bool $isComplete = false;
 
     /**
      * Downloader object.
      *
      * @var Downloader
      */
-    protected $downloader;
+    protected Downloader $downloader;
 
     /**
      * PlaylistArchiveStream constructor.
@@ -83,7 +83,7 @@ class PlaylistArchiveStream extends ZipArchive implements StreamInterface
      *
      * @return void
      */
-    protected function send($data)
+    protected function send($data): void
     {
         $pos = $this->tell();
 
@@ -133,7 +133,7 @@ class PlaylistArchiveStream extends ZipArchive implements StreamInterface
      *
      * @return void
      */
-    public function rewind()
+    public function rewind(): void
     {
         rewind($this->buffer);
     }
@@ -233,7 +233,7 @@ class PlaylistArchiveStream extends ZipArchive implements StreamInterface
      *
      * @return void
      */
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         fseek($this->buffer, $offset, $whence);
     }
@@ -256,7 +256,7 @@ class PlaylistArchiveStream extends ZipArchive implements StreamInterface
      * @return void
      * @throws AlltubeLibraryException
      */
-    protected function startVideoStream(Video $video)
+    protected function startVideoStream(Video $video): void
     {
         $response = $this->downloader->getHttpResponse($video);
 
@@ -320,7 +320,7 @@ class PlaylistArchiveStream extends ZipArchive implements StreamInterface
      *
      * @return void
      */
-    public function close()
+    public function close(): void
     {
         if (is_resource($this->buffer)) {
             fclose($this->buffer);

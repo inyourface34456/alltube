@@ -19,90 +19,97 @@ use Jawira\CaseConverter\Convert;
  */
 class Config
 {
-
     /**
      * youtube-dl binary path.
      *
      * @var string
      */
-    public $youtubedl = 'vendor/ytdl-org/youtube-dl/youtube_dl/__main__.py';
+    public string $youtubedl = 'vendor/yt-dlp/yt-dlp/yt_dlp/__main__.py';
 
     /**
      * python binary path.
      *
      * @var string
      */
-    public $python = '/usr/bin/python';
+    public string $python = '/usr/bin/python';
 
     /**
      * youtube-dl parameters.
      *
      * @var string[]
      */
-    public $params = ['--no-warnings', '--ignore-errors', '--flat-playlist', '--restrict-filenames', '--no-playlist'];
+    public array $params = [
+        '--no-warnings',
+        '--ignore-errors',
+        '--flat-playlist',
+        '--restrict-filenames',
+        '--no-playlist',
+        '--use-extractors',
+        'default,-generic',
+    ];
 
     /**
      * Enable audio conversion.
      *
      * @var bool
      */
-    public $convert = false;
+    public bool $convert = false;
 
     /**
      * Enable advanced conversion mode.
      *
      * @var bool
      */
-    public $convertAdvanced = false;
+    public bool $convertAdvanced = false;
 
     /**
      * List of formats available in advanced conversion mode.
      *
      * @var string[]
      */
-    public $convertAdvancedFormats = ['mp3', 'avi', 'flv', 'wav'];
+    public array $convertAdvancedFormats = ['mp3', 'avi', 'flv', 'wav'];
 
     /**
      * ffmpeg binary path.
      *
      * @var string
      */
-    public $ffmpeg = '/usr/bin/ffmpeg';
+    public string $ffmpeg = '/usr/bin/ffmpeg';
 
     /**
      * Path to the directory that contains the phantomjs binary.
      *
      * @var string
      */
-    public $phantomjsDir = '/usr/bin/';
+    public string $phantomjsDir = '/usr/bin/';
 
     /**
      * Disable URL rewriting.
      *
      * @var bool
      */
-    public $uglyUrls = false;
+    public bool $uglyUrls = false;
 
     /**
      * Stream downloaded files trough server?
      *
      * @var bool
      */
-    public $stream = false;
+    public bool $stream = false;
 
     /**
      * Allow to remux video + audio?
      *
      * @var bool
      */
-    public $remux = false;
+    public bool $remux = false;
 
     /**
      * MP3 bitrate when converting (in kbit/s).
      *
      * @var int
      */
-    public $audioBitrate = 128;
+    public int $audioBitrate = 128;
 
     /**
      * ffmpeg logging level.
@@ -110,21 +117,21 @@ class Config
      *
      * @var string
      */
-    public $ffmpegVerbosity = 'error';
+    public string $ffmpegVerbosity = 'error';
 
     /**
      * App name.
      *
      * @var string
      */
-    public $appName = 'AllTube Download';
+    public string $appName = 'AllTube Download';
 
     /**
      * Generic formats supported by youtube-dl.
      *
      * @var string[]
      */
-    public $genericFormats = [
+    public array $genericFormats = [
         'best/bestvideo' => 'Best',
         'bestvideo+bestaudio' => 'Remux best video with best audio',
         'worst/worstvideo' => 'Worst',
@@ -135,26 +142,26 @@ class Config
      *
      * @var bool
      */
-    public $debug = false;
+    public bool $debug = false;
 
     /**
      * Default to audio.
      *
      * @var bool
      */
-    public $defaultAudio = false;
+    public bool $defaultAudio = false;
 
     /**
      * Disable audio conversion from/to seeker.
      *
      * @var bool
      */
-    public $convertSeek = true;
+    public bool $convertSeek = true;
 
     /**
      * Config constructor.
      *
-     * @param mixed[] $options Options
+     * @param scalar[]|scalar[][]|null[] $options Options
      * @throws ConfigException
      */
     public function __construct(array $options = [])
@@ -205,7 +212,7 @@ class Config
      * @throws ConfigException If Python is missing
      * @throws ConfigException If youtube-dl is missing
      */
-    private function validateOptions()
+    private function validateOptions(): void
     {
         if (!is_file($this->youtubedl)) {
             throw new ConfigException("Can't find youtube-dl at " . $this->youtubedl);
@@ -222,11 +229,11 @@ class Config
     /**
      * Apply the provided options.
      *
-     * @param mixed[] $options Options
+     * @param scalar[]|scalar[][]|null[] $options Options
      *
      * @return void
      */
-    private function applyOptions(array $options)
+    private function applyOptions(array $options): void
     {
         foreach ($options as $option => $value) {
             if (isset($this->$option) && isset($value)) {
@@ -243,7 +250,7 @@ class Config
      * @return void
      * @throws ConfigException
      */
-    private function getEnv()
+    private function getEnv(): void
     {
         foreach (get_object_vars($this) as $prop => $value) {
             try {
@@ -278,11 +285,11 @@ class Config
     /**
      * Manually set some options.
      *
-     * @param mixed[] $options Options (see `config/config.example.yml` for available options)
+     * @param scalar[]|scalar[][]|null[] $options Options (see `config/config.example.yml` for available options)
      * @return void
      * @throws ConfigException
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         $this->applyOptions($options);
         $this->validateOptions();

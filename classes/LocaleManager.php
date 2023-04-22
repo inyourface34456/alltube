@@ -17,7 +17,6 @@ use Symfony\Component\Translation\Loader\PoFileLoader;
  */
 class LocaleManager
 {
-
     /**
      * Path to locales.
      */
@@ -28,14 +27,14 @@ class LocaleManager
      *
      * @var Locale|null
      */
-    private $curLocale;
+    private ?Locale $curLocale = null;
 
     /**
      * Session segment used to store session variables.
      *
      * @var Segment
      */
-    private $sessionSegment;
+    private Segment $sessionSegment;
 
     /**
      * Default locale.
@@ -49,7 +48,7 @@ class LocaleManager
      *
      * @var Translator
      */
-    private $translator;
+    private Translator $translator;
 
     /**
      * LocaleManager constructor.
@@ -114,7 +113,7 @@ class LocaleManager
      * @param Locale $locale Locale
      * @return void
      */
-    public function setLocale(Locale $locale)
+    public function setLocale(Locale $locale): void
     {
         $this->translator->setLocale($locale->getIso15897());
         $this->curLocale = $locale;
@@ -125,7 +124,7 @@ class LocaleManager
      * Unset the current locale.
      * @return void
      */
-    public function unsetLocale()
+    public function unsetLocale(): void
     {
         $this->translator->setLocale(self::DEFAULT_LOCALE);
         $this->curLocale = null;
@@ -135,14 +134,14 @@ class LocaleManager
     /**
      * Smarty "t" block.
      *
-     * @param mixed[] $params Block parameters
+     * @param string[]|string[][] $params Block parameters
      * @param string|null $text Block content
      *
      * @return string Translated string
      */
     public function smartyTranslate(array $params, string $text = null): string
     {
-        if (isset($params['params'])) {
+        if (isset($params['params']) && is_array($params['params'])) {
             return $this->t($text, $params['params']);
         } else {
             return $this->t($text);
@@ -154,7 +153,7 @@ class LocaleManager
      *
      * @param string|null $string $string String to translate
      *
-     * @param mixed[] $params
+     * @param string[] $params
      * @return string Translated string
      */
     public function t(string $string = null, array $params = []): string

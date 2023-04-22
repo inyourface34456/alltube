@@ -4,6 +4,7 @@ namespace Alltube\Factory;
 
 use Alltube\Exception\DependencyException;
 use Alltube\LocaleManager;
+use Locale;
 use Slim\Container;
 
 /**
@@ -12,7 +13,6 @@ use Slim\Container;
  */
 class LocaleManagerFactory
 {
-
     /**
      * @param Container $container
      * @return LocaleManager
@@ -20,7 +20,7 @@ class LocaleManagerFactory
      */
     public static function create(Container $container): LocaleManager
     {
-        if (!class_exists('Locale')) {
+        if (!class_exists(Locale::class)) {
             throw new DependencyException('You need to install the intl extension for PHP.');
         }
 

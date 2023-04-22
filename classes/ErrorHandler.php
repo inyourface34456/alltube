@@ -2,6 +2,7 @@
 
 namespace Alltube;
 
+use Slim\Http\StatusCode;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Throwable;
 
@@ -11,13 +12,12 @@ use Throwable;
  */
 class ErrorHandler
 {
-
     /**
      * Last resort if the error has not been caught by the Slim error handler for some reason.
      * @param Throwable $e
      * @return void
      */
-    public static function handle(Throwable $e)
+    public static function handle(Throwable $e): void
     {
         error_log($e);
 
@@ -29,7 +29,7 @@ class ErrorHandler
             http_response_code($exception->getStatusCode());
             die($exception->getAsString());
         } else {
-            http_response_code(500);
+            http_response_code(StatusCode::HTTP_INTERNAL_SERVER_ERROR);
             die('Error when starting the app: ' . htmlentities($e->getMessage()));
         }
     }

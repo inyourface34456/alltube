@@ -7,6 +7,7 @@
 namespace Alltube\Factory;
 
 use Aura\Session\Session;
+use Aura\Session\SessionFactory as AuraSessionFactory;
 use Slim\Container;
 
 /**
@@ -14,7 +15,6 @@ use Slim\Container;
  */
 class SessionFactory
 {
-
     /**
      * Get the current session.
      *
@@ -23,7 +23,7 @@ class SessionFactory
      */
     public static function create(Container $container): Session
     {
-        $session_factory = new \Aura\Session\SessionFactory();
+        $session_factory = new AuraSessionFactory();
         $session = $session_factory->newInstance($_COOKIE);
 
         $session->setCookieParams(['httponly' => true]);

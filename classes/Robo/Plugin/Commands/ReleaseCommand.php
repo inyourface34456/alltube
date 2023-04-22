@@ -14,7 +14,6 @@ use Robo\Tasks;
  */
 class ReleaseCommand extends Tasks
 {
-
     /**
      * Create release archive
      * @return void
@@ -27,11 +26,12 @@ class ReleaseCommand extends Tasks
         $gitTask = $this->taskExec('git');
         $result = $gitTask
             ->arg('describe')
+            ->interactive(false)
             ->run();
 
         $tmpDir = $this->_tmpDir();
 
-        $filename = 'alltube-' . trim((string)$result->getMessage()) . '.zip';
+        $filename = 'alltube-' . trim($result->getMessage()) . '.zip';
 
         /** @var FilesystemStack $rmTask */
         $rmTask = $this->taskFilesystemStack();
